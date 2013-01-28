@@ -1,5 +1,6 @@
 package org.gesis.zl.marshalling;
 
+import java.io.Writer;
 import java.util.List;
 
 /**
@@ -34,5 +35,12 @@ public interface Marshaller<T> {
 	 * @return
 	 */
 	public abstract boolean writeHeader();
+
+	/**
+	 * Returns the writer that is used in this marshaller instance.
+	 * 
+	 * @return
+	 */
+	public abstract Writer getWriter();
 
 }
