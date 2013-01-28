@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang.StringUtils;
 import org.gesis.zl.marshalling.Unmarshaller;
 
 import au.com.bytecode.opencsv.CSVReader;
@@ -106,6 +107,9 @@ public class CsvUnmarshaller<T> implements Unmarshaller<T> {
 			for ( int i = 0; i < values.length; i++ )
 			{
 				String fieldName = fieldMappings.get( Integer.valueOf( i ) );
+
+				if ( StringUtils.isEmpty( fieldName ) )
+					continue;
 
 				BeanUtils.setProperty( instance, fieldName, values[i] );
 			}
