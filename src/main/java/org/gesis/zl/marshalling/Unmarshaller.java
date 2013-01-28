@@ -3,6 +3,8 @@ package org.gesis.zl.marshalling;
 import java.util.List;
 
 /**
+ * Generic interface for an Unmarshaller.
+ * 
  * @author matthaeus
  * 
  * @param <T>

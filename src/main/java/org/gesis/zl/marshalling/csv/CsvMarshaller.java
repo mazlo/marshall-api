@@ -13,7 +13,7 @@ import au.com.bytecode.opencsv.CSVWriter;
 
 public class CsvMarshaller<T> implements Marshaller<T> {
 
-	private CsvAnnotationReader<T> annotationReader;
+	private CsvAnnotationReaderImpl<T> annotationReader;
 
 	private CSVWriter csvWriter;
 
@@ -21,7 +21,7 @@ public class CsvMarshaller<T> implements Marshaller<T> {
 
 	public CsvMarshaller( Class<T> annotatedBean, Writer writer ) throws IOException
 	{
-		this.annotationReader = new CsvAnnotationReader<T>( annotatedBean );
+		this.annotationReader = new CsvAnnotationReaderImpl<T>( annotatedBean );
 
 		this.writer = writer;
 		this.csvWriter = new CSVWriter( writer, this.annotationReader.getSeparator() );

@@ -1,4 +1,4 @@
-package org.gesis.zl.marshalling.csv;
+package org.gesis.zl.marshalling.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

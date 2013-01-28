@@ -24,10 +24,10 @@ public class CsvUnmarshaller<T> implements Unmarshaller<T> {
 
 	boolean firstLineSkipped = false;
 
-	public CsvUnmarshaller( Class<T> annotatedBean, Reader reader ) throws FileNotFoundException
+	public CsvUnmarshaller( CsvAnnotationReader<T> annotationReader, Reader reader ) throws FileNotFoundException
 	{
-		this.annotationReader = new CsvAnnotationReader<T>( annotatedBean );
-		this.bean = annotatedBean;
+		this.annotationReader = annotationReader;
+		this.bean = annotationReader.getAnnotatedClass();
 
 		// check if first line should be skipped
 		this.firstLineSkipped = !this.annotationReader.skipFirstLine();
