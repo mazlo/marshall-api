@@ -14,7 +14,6 @@ import au.com.bytecode.opencsv.CSVWriter;
 public class CsvMarshaller<T> implements Marshaller<T> {
 
 	private CsvAnnotationReaderImpl<T> annotationReader;
-
 	private CSVWriter csvWriter;
 
 	private Writer writer;
@@ -133,5 +132,15 @@ public class CsvMarshaller<T> implements Marshaller<T> {
 		csvWriter.writeNext( headers );
 
 		return true;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.gesis.zl.marshalling.Marshaller#getWriter()
+	 */
+	public Writer getWriter()
+	{
+		return this.writer;
 	}
 }
