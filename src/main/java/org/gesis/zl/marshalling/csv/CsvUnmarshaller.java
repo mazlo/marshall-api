@@ -6,10 +6,8 @@ import java.io.Reader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.lang.StringUtils;
 import org.gesis.zl.marshalling.Unmarshaller;
 
 import au.com.bytecode.opencsv.CSVReader;
@@ -94,7 +92,7 @@ public class CsvUnmarshaller<T> implements Unmarshaller<T> {
 			return null;
 
 		// get the field mappings
-		Map<Integer, String> fieldMappings = this.annotationReader.getInputNamesByPositions();
+		List<String> fieldNames = this.annotationReader.getInputFieldNames();
 
 		// the bean instance, i.e. new row
 		T instance;
@@ -104,14 +102,17 @@ public class CsvUnmarshaller<T> implements Unmarshaller<T> {
 			instance = bean.newInstance();
 
 			// set the values for the fields of the bean
-			for ( int i = 0; i < values.length; i++ )
+			for ( String fieldName : fieldNames )
 			{
-				String fieldName = fieldMappings.get( Integer.valueOf( i ) );
+				int position = annotationReader.getPositionOf( fieldName );
 
-				if ( StringUtils.isEmpty( fieldName ) )
+				if ( position < 0 )
 					continue;
 
-				BeanUtils.setProperty( instance, fieldName, values[i] );
+				if ( position >= values.length )
+					continue;
+
+				BeanUtils.setProperty( instance, fieldName, values[position] );
 			}
 
 			return instance;

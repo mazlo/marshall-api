@@ -17,11 +17,11 @@ public class Row {
 	@InputField( position = 3 )
 	private String description;
 
-	@OutputField( position = 0, name = "name" )
-	private String target_name;
-
 	@OutputField( position = 1, name = "description" )
 	private String target_description;
+
+	@OutputField( position = 0, name = "name" )
+	private String target_name;
 
 	public int getId1()
 	{

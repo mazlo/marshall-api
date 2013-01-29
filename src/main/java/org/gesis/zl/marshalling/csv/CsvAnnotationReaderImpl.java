@@ -1,9 +1,10 @@
 package org.gesis.zl.marshalling.csv;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.apache.commons.lang.StringUtils;
 import org.gesis.zl.marshalling.annotations.CsvConfiguration;
@@ -24,67 +25,44 @@ public class CsvAnnotationReaderImpl<T> implements CsvAnnotationReader<T> {
 
 	private Class<T> annotatedClass;
 
+	private List<String> inputFieldNames;
+	private List<String> outputFieldNames;
+
+	private List<String> outputColumnNames;
+
 	public CsvAnnotationReaderImpl( Class<T> annotatedClass )
 	{
 		this.annotatedClass = annotatedClass;
-	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.gesis.zl.marshalling.csv.GenericCsvAnnotationReader#
-	 * getInputNamesByPositions()
-	 */
-	public Map<Integer, String> getInputNamesByPositions()
-	{
-		Map<Integer, String> namesByPositions = new HashMap<Integer, String>();
+		this.inputFieldNames = new ArrayList<String>();
+		this.outputFieldNames = new ArrayList<String>();
+
+		this.outputColumnNames = new ArrayList<String>();
+
+		// temporary maps to store the positions of the fields
+		Map<Integer, String> o_fieldNames = new TreeMap<Integer, String>();
+		Map<Integer, String> o_columnNames = new TreeMap<Integer, String>();
 
 		// have a look on the declared fields, i.e. attributes
 		for ( Field field : annotatedClass.getDeclaredFields() )
 		{
-			// skip all other annotations but InputColumn
-			if ( !field.isAnnotationPresent( InputField.class ) )
-				continue;
+			// read the InputField property
+			if ( field.isAnnotationPresent( InputField.class ) )
+			{
+				this.inputFieldNames.add( field.getName() );
+			}
+			// read the OutputField property
+			else if ( field.isAnnotationPresent( OutputField.class ) )
+			{
+				int position = field.getAnnotation( OutputField.class ).position();
 
-			// read the properties
-			int position = field.getAnnotation( InputField.class ).position();
-
-			namesByPositions.put( position, field.getName() );
+				o_fieldNames.put( position, field.getName() );
+				o_columnNames.put( position, field.getAnnotation( OutputField.class ).name() );
+			}
 		}
 
-		return namesByPositions;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.gesis.zl.marshalling.csv.GenericCsvAnnotationReader#
-	 * getOutputPositionsByNames()
-	 */
-	public Map<String, Integer> getOutputPositionsByNames()
-	{
-		// LinkedHashMap since the order is importance
-		Map<String, Integer> positionsByNames = new LinkedHashMap<String, Integer>();
-
-		// have a look on the declared fields, i.e. attributes
-		for ( Field field : annotatedClass.getDeclaredFields() )
-		{
-			// skip all other annotations but OutputColumn
-			if ( !field.isAnnotationPresent( OutputField.class ) )
-				continue;
-
-			// read the properties
-			int position = field.getAnnotation( OutputField.class ).position();
-			String name = field.getAnnotation( OutputField.class ).name();
-
-			// if property "name" wasn't set just take the field name itself
-			if ( StringUtils.isNotEmpty( name ) && !StringUtils.equals( OutputField.DEFAULT_COLUMN_NAME, name ) )
-				positionsByNames.put( name, position );
-			else
-				positionsByNames.put( field.getName(), position );
-		}
-
-		return positionsByNames;
+		this.outputFieldNames = new ArrayList<String>( o_fieldNames.values() );
+		this.outputColumnNames = new ArrayList<String>( o_columnNames.values() );
 	}
 
 	/*
@@ -126,6 +104,67 @@ public class CsvAnnotationReaderImpl<T> implements CsvAnnotationReader<T> {
 	public Class<T> getAnnotatedClass()
 	{
 		return this.annotatedClass;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.gesis.zl.marshalling.csv.CsvAnnotationReader#getInputFieldNames()
+	 */
+	public List<String> getInputFieldNames()
+	{
+		return this.inputFieldNames;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.gesis.zl.marshalling.csv.CsvAnnotationReader#getOutputFieldNames()
+	 */
+	public List<String> getOutputFieldNames()
+	{
+		return this.outputFieldNames;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.gesis.zl.marshalling.csv.CsvAnnotationReader#getOutputColumnNames()
+	 */
+	public List<String> getOutputColumnNames()
+	{
+		return this.outputColumnNames;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.gesis.zl.marshalling.csv.CsvAnnotationReader#getPositionOf(java.lang
+	 * .String)
+	 */
+	public int getPositionOf( String fieldName )
+	{
+		if ( StringUtils.isEmpty( fieldName ) )
+			return -1;
+
+		// have a look on the declared fields, i.e. attributes
+		for ( Field field : annotatedClass.getDeclaredFields() )
+		{
+			if ( !StringUtils.equals( fieldName, field.getName() ) )
+				continue;
+
+			// read the properties
+			if ( !field.isAnnotationPresent( InputField.class ) )
+				continue;
+
+			return field.getAnnotation( InputField.class ).position();
+		}
+
+		return -1;
 	}
 
 }

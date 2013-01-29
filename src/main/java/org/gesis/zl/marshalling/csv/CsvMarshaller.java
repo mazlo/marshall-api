@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.gesis.zl.marshalling.Marshaller;
@@ -69,20 +68,15 @@ public class CsvMarshaller<T> implements Marshaller<T> {
 		if ( instance == null )
 			return; // the instance cannot be null
 
-		// the mapping of field names to positions
-		Map<String, Integer> mappings = this.annotationReader.getOutputPositionsByNames();
+		List<String> outputColumnNames = this.annotationReader.getOutputFieldNames();
 
 		// resulting values
-		String[] csvValues = new String[mappings.size()];
+		String[] csvValues = new String[outputColumnNames.size()];
 
 		// populates the array with values
-		for ( String fieldName : mappings.keySet() )
+		for ( int i = 0; i < outputColumnNames.size(); i++ )
 		{
-			// the position for the field
-			int position = mappings.get( fieldName );
-
-			if ( position < 0 )
-				continue;
+			String fieldName = outputColumnNames.get( i );
 
 			String value = "";
 
@@ -100,12 +94,12 @@ public class CsvMarshaller<T> implements Marshaller<T> {
 				continue;
 			} catch ( NoSuchMethodException e )
 			{
-				System.err.println( "Could not set the value for the field:" + fieldName + ", at column position: " + position );
+				System.err.println( "Could not set the value for the field:" + fieldName );
 				continue;
 			}
 
 			// set the value for the position
-			csvValues[position] = value;
+			csvValues[i] = value;
 		}
 
 		this.csvWriter.writeNext( csvValues );
@@ -119,17 +113,9 @@ public class CsvMarshaller<T> implements Marshaller<T> {
 		if ( csvWriter == null )
 			return false;
 
-		Map<String, Integer> mappings = annotationReader.getOutputPositionsByNames();
+		List<String> headers = annotationReader.getOutputColumnNames();
 
-		String[] headers = new String[mappings.size()];
-
-		for ( String column : mappings.keySet() )
-		{
-			int position = mappings.get( column );
-			headers[position] = column;
-		}
-
-		csvWriter.writeNext( headers );
+		csvWriter.writeNext( headers.toArray( new String[0] ) );
 
 		return true;
 	}

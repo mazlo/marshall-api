@@ -1,6 +1,6 @@
 package org.gesis.zl.marshalling.csv;
 
-import java.util.Map;
+import java.util.List;
 
 import org.gesis.zl.marshalling.AnnotationReader;
 
@@ -16,20 +16,34 @@ import org.gesis.zl.marshalling.AnnotationReader;
 public interface CsvAnnotationReader<T> extends AnnotationReader<T> {
 
 	/**
-	 * Reads the annotations on the desired resulting bean class. In particular,
-	 * this method analyses the <b>InputColum</b> annotations.
+	 * Reads the annotations on the annotated bean class. In particular, this
+	 * method analyses the <b>InputColum</b> annotations on fields and returns
+	 * its name. The list of field names is sorted with respect to the
+	 * <i>position</i>-property.
 	 * 
 	 * @return
 	 */
-	public abstract Map<Integer, String> getInputNamesByPositions();
+	public abstract List<String> getInputFieldNames();
+
+	/**
+	 * Reads the annotations on the annotated bean class. In particular, this
+	 * method analyses the <b>OutputColum</b> annotations on fields and returns
+	 * its name. The list of field names is sorted with respect to the
+	 * <i>position</i>-property.
+	 * 
+	 * @return
+	 */
+	public abstract List<String> getOutputFieldNames();
 
 	/**
 	 * Reads the annotations on the desired resulting bean class. In particular,
-	 * this method analyses the <b>OutputColum</b> annotations.
+	 * this method analyses the <b>OutputColum</b> annotations and returns the
+	 * value for property <i>name</i>. The list of field names is sorted with
+	 * respect to the <i>position</i>-property.
 	 * 
 	 * @return
 	 */
-	public abstract Map<String, Integer> getOutputPositionsByNames();
+	public abstract List<String> getOutputColumnNames();
 
 	/**
 	 * Returns the value of the <i>skipFirstLine</i>-property, configurated in
@@ -46,4 +60,6 @@ public interface CsvAnnotationReader<T> extends AnnotationReader<T> {
 	 * @return
 	 */
 	public abstract char getSeparator();
+
+	public abstract int getPositionOf( String fieldName );
 }

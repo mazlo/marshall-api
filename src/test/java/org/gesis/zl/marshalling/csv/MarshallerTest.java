@@ -29,10 +29,27 @@ public class MarshallerTest {
 	public void testWriteHeaders()
 	{
 		marshaller.writeHeader();
+
 		String[] columns = marshaller.getWriter().toString().trim().split( "," );
 
 		assertEquals( "\"name\"", columns[0] );
 		assertEquals( "\"description\"", columns[1] );
+	}
+
+	@Test
+	public void testWriteNext()
+	{
+		Row row = new Row();
+
+		row.setTarget_name( "target_test_name" );
+		row.setTarget_description( "target_test_value" );
+
+		marshaller.writeNext( row );
+
+		String[] columns = marshaller.getWriter().toString().trim().split( "," );
+
+		assertEquals( "\"target_test_name\"", columns[0] );
+		assertEquals( "\"target_test_value\"", columns[1] );
 	}
 
 }
