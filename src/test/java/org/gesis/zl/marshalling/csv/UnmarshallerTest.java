@@ -33,7 +33,7 @@ public class UnmarshallerTest {
 	{
 		List<Row> all = unmarshaller.getAll();
 		assertNotNull( all );
-		assertEquals( 2, all.size() );
+		assertEquals( 3, all.size() );
 	}
 
 	@Test
@@ -50,6 +50,21 @@ public class UnmarshallerTest {
 		assertEquals( "test3", row.getDescription() );
 
 		row = unmarshaller.getNext();
+		assertNotNull( row );
+
+		row = unmarshaller.getNext();
 		assertNull( row );
+	}
+
+	@Test
+	public void testGetRowWithEmptyColumn()
+	{
+		List<Row> all = unmarshaller.getAll();
+		assertNotNull( all );
+		assertEquals( 3, all.size() );
+
+		Row row = all.get( 2 );
+		assertNotNull( row );
+		assertEquals( "", row.getName() );
 	}
 }
