@@ -67,4 +67,12 @@ public class CsvAnnotationReaderTest {
 		assertEquals( 3, pos );
 	}
 
+	@Test
+	public void testGetPositionOfNonExistantField()
+	{
+		int pos = reader.getPositionOf( "arbitrary_column_name" );
+		assertEquals( -1, pos );
+
+	}
+
 }
