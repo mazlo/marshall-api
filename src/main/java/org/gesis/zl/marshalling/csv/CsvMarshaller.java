@@ -22,7 +22,7 @@ public class CsvMarshaller<T> implements Marshaller<T> {
 		this.annotationReader = new CsvAnnotationReaderImpl<T>( annotatedBean );
 
 		this.writer = writer;
-		this.csvWriter = new CSVWriter( writer, this.annotationReader.getSeparator() );
+		this.csvWriter = new CSVWriter( writer, this.annotationReader.getSeparator(), this.annotationReader.getQuotationCharacter() );
 	}
 
 	/* (non-Javadoc)

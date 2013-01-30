@@ -76,7 +76,7 @@ public class CsvUnmarshaller<T> implements Unmarshaller<T> {
 	 */
 	private CSVReader createCsvReader()
 	{
-		return new CSVReader( reader, this.annotationReader.getSeparator() );
+		return new CSVReader( reader, this.annotationReader.getSeparator(), this.annotationReader.getQuotationCharacter() );
 	}
 
 	/*
