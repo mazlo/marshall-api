@@ -68,6 +68,7 @@ public class CsvMarshaller<T> implements Marshaller<T> {
 		if ( instance == null )
 			return; // the instance cannot be null
 
+		// list is sorted according to the positions of the output fields
 		List<String> outputColumnNames = this.annotationReader.getOutputFieldNames();
 
 		// resulting values
@@ -76,6 +77,7 @@ public class CsvMarshaller<T> implements Marshaller<T> {
 		// populates the array with values
 		for ( int i = 0; i < outputColumnNames.size(); i++ )
 		{
+			// i is the position of the output fields
 			String fieldName = outputColumnNames.get( i );
 
 			String value = "";
@@ -83,6 +85,9 @@ public class CsvMarshaller<T> implements Marshaller<T> {
 			try
 			{
 				value = BeanUtils.getProperty( instance, fieldName );
+
+				if ( value == null )
+					value = "";
 
 			} catch ( IllegalAccessException e )
 			{
