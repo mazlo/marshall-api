@@ -89,7 +89,7 @@ public class CsvAnnotationReaderImpl<T> implements CsvAnnotationReader<T> {
 	{
 		CsvConfiguration annotation = annotatedClass.getAnnotation( CsvConfiguration.class );
 
-		// default is to skip the line
+		// default
 		if ( annotation == null )
 			return CsvConfiguration.DEFAULT_SEPARATOR;
 
@@ -158,10 +158,10 @@ public class CsvAnnotationReaderImpl<T> implements CsvAnnotationReader<T> {
 				continue;
 
 			// read the properties
-			if ( !field.isAnnotationPresent( InputField.class ) )
-				continue;
-
-			return field.getAnnotation( InputField.class ).position();
+			if ( field.isAnnotationPresent( InputField.class ) )
+				return field.getAnnotation( InputField.class ).position();
+			else if ( field.isAnnotationPresent( OutputField.class ) )
+				return field.getAnnotation( OutputField.class ).position();
 		}
 
 		return -1;

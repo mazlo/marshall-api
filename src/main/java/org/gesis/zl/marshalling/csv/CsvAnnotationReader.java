@@ -61,5 +61,11 @@ public interface CsvAnnotationReader<T> extends AnnotationReader<T> {
 	 */
 	public abstract char getSeparator();
 
+	/**
+	 * Returns the value of the <i>position</i>-property for the given field.
+	 * 
+	 * @param fieldName
+	 * @return
+	 */
 	public abstract int getPositionOf( String fieldName );
 }
