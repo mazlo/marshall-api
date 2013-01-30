@@ -167,4 +167,15 @@ public class CsvAnnotationReaderImpl<T> implements CsvAnnotationReader<T> {
 		return -1;
 	}
 
+	public char getQuotationCharacter()
+	{
+		CsvConfiguration annotation = annotatedClass.getAnnotation( CsvConfiguration.class );
+
+		// default
+		if ( annotation == null )
+			return CsvConfiguration.DEFAULT_QUOTATION_CHARACTER;
+
+		return annotation.quoteChar();
+	}
+
 }

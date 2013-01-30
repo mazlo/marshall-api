@@ -62,6 +62,14 @@ public interface CsvAnnotationReader<T> extends AnnotationReader<T> {
 	public abstract char getSeparator();
 
 	/**
+	 * Returns the value of the <i>quoteChar</i>-property, configured in the
+	 * class for which the CsvConfiguration-Annotation was applied.
+	 * 
+	 * @return
+	 */
+	public abstract char getQuotationCharacter();
+
+	/**
 	 * Returns the value of the <i>position</i>-property for the given field.
 	 * 
 	 * @param fieldName

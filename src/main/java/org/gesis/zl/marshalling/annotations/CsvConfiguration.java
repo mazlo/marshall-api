@@ -11,9 +11,12 @@ public @interface CsvConfiguration {
 
 	public static final char DEFAULT_SEPARATOR = ',';
 	public static final boolean DEFAULT_SKIP_FIRST_LINE = true;
+	public static final char DEFAULT_QUOTATION_CHARACTER = '"';
 
 	char separator() default DEFAULT_SEPARATOR;
 
 	boolean skipFirstLine() default true;
+
+	char quoteChar() default DEFAULT_QUOTATION_CHARACTER;
 
 }
