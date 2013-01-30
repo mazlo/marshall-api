@@ -167,6 +167,12 @@ public class CsvAnnotationReaderImpl<T> implements CsvAnnotationReader<T> {
 		return -1;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.gesis.zl.marshalling.csv.CsvAnnotationReader#getQuotationCharacter()
+	 */
 	public char getQuotationCharacter()
 	{
 		CsvConfiguration annotation = annotatedClass.getAnnotation( CsvConfiguration.class );
