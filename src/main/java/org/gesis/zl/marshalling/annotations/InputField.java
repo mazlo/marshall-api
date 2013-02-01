@@ -13,4 +13,6 @@ public @interface InputField {
 
 	int position();
 
+	String[] ignoreValues() default {};
+
 }

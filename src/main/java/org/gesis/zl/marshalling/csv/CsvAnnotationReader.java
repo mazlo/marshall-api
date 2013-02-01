@@ -1,6 +1,7 @@
 package org.gesis.zl.marshalling.csv;
 
 import java.util.List;
+import java.util.Set;
 
 import org.gesis.zl.marshalling.AnnotationReader;
 
@@ -76,4 +77,12 @@ public interface CsvAnnotationReader<T> extends AnnotationReader<T> {
 	 * @return
 	 */
 	public abstract int getPositionOf( String fieldName );
+
+	/**
+	 * Returns the set of ignored values, defined in the
+	 * <i>ignoredValues</i>-property for the given field.
+	 * 
+	 * @return
+	 */
+	public abstract Set<String> getIgnoredValues(String fieldName);
 }

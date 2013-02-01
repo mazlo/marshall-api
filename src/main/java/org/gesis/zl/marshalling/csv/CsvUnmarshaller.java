@@ -112,7 +112,13 @@ public class CsvUnmarshaller<T> implements Unmarshaller<T> {
 				if ( position >= values.length )
 					continue;
 
-				BeanUtils.setProperty( instance, fieldName, values[position] );
+				String value = values[position];
+
+				if ( annotationReader.getIgnoredValues( fieldName ).contains( value ) )
+					// ignore this value
+					continue;
+
+				BeanUtils.setProperty( instance, fieldName, value );
 			}
 
 			return instance;

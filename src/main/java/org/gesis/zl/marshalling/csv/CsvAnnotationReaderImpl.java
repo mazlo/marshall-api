@@ -2,8 +2,11 @@ package org.gesis.zl.marshalling.csv;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 import org.apache.commons.lang.StringUtils;
@@ -182,6 +185,30 @@ public class CsvAnnotationReaderImpl<T> implements CsvAnnotationReader<T> {
 			return CsvConfiguration.DEFAULT_QUOTATION_CHARACTER;
 
 		return annotation.quoteChar();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.gesis.zl.marshalling.csv.CsvAnnotationReader#getIgnoredValues(java
+	 * .lang.String)
+	 */
+	public Set<String> getIgnoredValues(String fieldName)
+	{
+		try
+		{
+			Field field = annotatedClass.getDeclaredField( fieldName );
+			
+			String[] ignoreValues = field.getAnnotation( InputField.class ).ignoreValues();
+			return new HashSet<String>( Arrays.asList( ignoreValues ) );
+		} catch (SecurityException e)
+		{
+			return new HashSet<String>();
+		} catch (NoSuchFieldException e)
+		{
+			return new HashSet<String>();
+		}
 	}
 
 }

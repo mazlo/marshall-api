@@ -14,7 +14,7 @@ public class Row {
 	@InputField( position = 2 )
 	private String name;
 
-	@InputField( position = 3 )
+	@InputField( position = 3, ignoreValues = { "test4", "test5" } )
 	private String description;
 
 	@OutputField( position = 1, name = "description" )

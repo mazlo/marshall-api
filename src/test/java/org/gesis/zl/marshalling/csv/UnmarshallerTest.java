@@ -67,4 +67,15 @@ public class UnmarshallerTest {
 		assertNotNull( row );
 		assertEquals( "", row.getName() );
 	}
+
+	@Test
+	public void testIgnoreValue()
+	{
+		List<Row> all = unmarshaller.getAll();
+		assertNotNull( all );
+		assertEquals( 3, all.size() );
+
+		Row row = all.get( 2 );
+		assertNull( row.getDescription() );
+	}
 }
