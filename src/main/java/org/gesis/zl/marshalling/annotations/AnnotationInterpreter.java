@@ -1,6 +1,6 @@
-package org.gesis.zl.marshalling;
+package org.gesis.zl.marshalling.annotations;
 
-public interface AnnotationReader<T> {
+public interface AnnotationInterpreter<T> {
 
 	/**
 	 * Returns the annotated class <i>T</i>.
