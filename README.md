@@ -21,25 +21,65 @@ Please see these packages for available implementations:
 
 * [marshall-csv](https://github.com/mazlo/marshall-csv), provides an implementation for data stored in CSV-format (Comma Separated Values).
 
-### How to Implement
+### Use of Annotations
 
-The annotations are applied to fields of a plain POJO. For the mapping two types of annotations are provided:
+The annotations are applied to fields of a plain POJO. For the mapping, two types of annotations are provided:
 
-* InputField
-* OutputField
+* `@InputField`, for unmarshalling
+* `@OutputField`, for marshalling
+
+Place these annotations on the fields of the POJO and
+
+**implement getter- and setter-methods**. 
+
+For instance,
+
+    public class BeanClass {
+    
+        @InputField( position=0 )
+        private String description;
+        
+        @OutputField ( name="comment" )
+        private String target_description;
+        
+        // getter-/setter-methods
+    }
+
+### Provided Classes and Interfaces
 
 The main interfaces are
 
-* Marshaller
-* Unmarshaller
-* AnnotationInterpreter
+* `Marshaller<T>`
+* `Unmarshaller<T>`
+* `AnnotationInterpreter<T>`
 
-The class DefaultAnnotationInterpreter provides a default mechanism to interpret the annotations as they are applied to fields of a POJO.
+with the generic type `T`. `T` stands for the class where the annotations can be found.
 
-If you want to create your own implementation, please stick to the convention to 
+For the annotations to be recognized, a so called `AnnotationInterpreter` is needed. A `DefaultAnnotationInterpreter` provides a default implementation.
 
-* create your own interface for your Marshaller/Unmarshaller by extending the generic interfaces
-* provide Factory-classes for simple instantiation of your Marshaller/Unmarshaller and AnnotationInterpreter
+A method in Factory-class `AnnotationInterpreterFactory` simplifies the creation of an instance.
+
+    AnnotationInterpreterFactory.createDefaultAnnotationInterpreter( BeanClass.class );
+
+### Individual Implementation
+
+If you want to create your own implementation, e.g. for new data format, please stick to the convention to 
+
+* Create your own interface by extending the generic interfaces `Marshaller` and `Unmarshaller`, e.g.
+
+    `public interface NewFormatUnmarshaller<T> extends Unmarshaller<T> { ... }`
+
+* If you need an individual interpreter for the annotations provided above, please extend the interface `AnnotationInterpreter` and provide your own implementation, e.g.
+
+    `public interface SpecialAnnotationInterpreter<T> extends AnnotationInterpreter { ... }`
+    
+    and 
+    
+    `public class SpecialAnnotationInterpreterImpl<T> implements SpecialAnnotationInterpreter<T>`
+
+* Finally, provide Factory-classes for simple instantiation of your Marshaller/Unmarshaller and AnnotationInterpreter
+
+    `NewFormatUnmarshallerFactory.createNewFormatUnmarshaller( ... )`
 
 A sample implementation is [marshall-csv](https://github.com/mazlo/marshall-csv).
 
