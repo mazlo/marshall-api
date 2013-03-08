@@ -5,6 +5,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.gesis.zl.marshalling.annotations.DataType.Type;
+
 @Retention( RetentionPolicy.RUNTIME )
 @Target( ElementType.FIELD )
 public @interface InputField {
@@ -14,5 +16,7 @@ public @interface InputField {
 	int position();
 
 	String[] ignoreValues() default {};
+
+	DataType dataType() default @DataType( type = Type.STRING );
 
 }

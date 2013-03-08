@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import org.apache.commons.lang.StringUtils;
+import org.gesis.zl.marshalling.annotations.DataType.Type;
 
 /**
  * Default annotation interpreter. Implements all methods defined in
@@ -149,6 +150,68 @@ public class DefaultAnnotationInterpreter<T> implements AnnotationInterpreter<T>
 		{
 			return new HashSet<String>();
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.gesis.zl.marshalling.annotations.AnnotationInterpreter#isBooleanType
+	 * (java.lang.String)
+	 */
+	public boolean isBooleanType(String fieldName)
+	{
+		DataType dataType = getDataType( fieldName );
+
+		if ( dataType == null )
+			return false;
+
+		if ( dataType.type() != Type.BOOLEAN )
+			return false;
+
+		return true;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.gesis.zl.marshalling.annotations.AnnotationInterpreter#
+	 * getDefaultValueForType(java.lang.String)
+	 */
+	public String getDefaultValueForType(String fieldName)
+	{
+		DataType dataType = getDataType( fieldName );
+
+		return dataType.defaultValue();
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.gesis.zl.marshalling.annotations.AnnotationInterpreter#getDataType
+	 * (java.lang.String)
+	 */
+	public DataType getDataType(String fieldName)
+	{
+		try
+		{
+			Field field = annotatedClass.getDeclaredField( fieldName );
+
+			DataType dataType = field.getAnnotation( InputField.class ).dataType();
+			
+			if ( dataType == null )
+				return null;
+
+			return dataType;
+		} catch (SecurityException e)
+		{
+		} catch (NoSuchFieldException e)
+		{
+		}
+
+		return null;
 	}
 
 }

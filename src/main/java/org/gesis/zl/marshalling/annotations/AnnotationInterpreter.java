@@ -56,4 +56,32 @@ public interface AnnotationInterpreter<T> {
 	 */
 	public abstract Set<String> getIgnoredValues(String fieldName);
 
+	/**
+	 * If set for the given field, this method returns the <i>type</i>-property
+	 * of the <i>dataType</i>-property.
+	 * 
+	 * @param fieldName
+	 * @return
+	 */
+	public abstract DataType getDataType(String fieldName);
+
+	/**
+	 * Returns true if the given field has a <i>dataType</i>-property and its
+	 * <i>type</i>-property is of value <i>BooleanType</i>.
+	 * 
+	 * @param fieldName
+	 * @return
+	 */
+	public abstract boolean isBooleanType(String fieldName);
+
+	/**
+	 * Returns the value of the <i>defaultValue</i>-property, if the
+	 * <i>dataType</i>-property is set for the given field name.
+	 * 
+	 * @param fieldName
+	 * @param type
+	 * @return
+	 */
+	public abstract String getDefaultValueForType(String fieldName);
+
 }
